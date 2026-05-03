@@ -130,19 +130,20 @@ protected:
   //   }
 };
 template <typename V, typename F> struct NoTesselationDraw : BaseProgram<V, F> {
-  using VertexType = typename BaseProgram<V, F>::VertexType;
-  using BaseProgram<V, F>::BaseProgram;
+  using Base = BaseProgram<V, F>;
+  using VertexType = typename Base::VertexType;
+  using Base::BaseProgram;
 
   void draw(const GLenum primitive, GL::VBO<VertexType> &vbo,
             const bool reset = true) const {
-    bind(vbo);
+    Base::bind(vbo);
     glDrawArrays(primitive, 0, vbo.count);
     if (reset)
       vbo.reset();
   }
   void draw(const GLenum primitive, GL::VBO<VertexType> &vbo,
             const GL::EBO &ebo, const bool reset = true) const {
-    bind(vbo, ebo);
+    Base::bind(vbo, ebo);
     glDrawElements(primitive, ebo.count, ebo.type,
                    reinterpret_cast<const void *>(0));
     if (reset)
@@ -151,13 +152,14 @@ template <typename V, typename F> struct NoTesselationDraw : BaseProgram<V, F> {
 };
 template <typename V, typename T, typename F>
 struct YesTesselationDraw : BaseProgram<V, F> {
-  using VertexType = typename BaseProgram<V, F>::VertexType;
-  using BaseProgram<V, F>::BaseProgram;
+  using Base = BaseProgram<V, F>;
+  using VertexType = typename Base::VertexType;
+  using Base::BaseProgram;
 
   static constexpr auto PATCH_SIZE = T::PATCH_SIZE;
 
   void draw(GL::VBO<VertexType> &vbo, const bool reset = true) const {
-    bind(vbo);
+    Base::bind(vbo);
     glPatchParameteri(GL_PATCH_VERTICES, PATCH_SIZE);
     glDrawArrays(GL_PATCHES, 0, vbo.count);
     if (reset)
@@ -165,7 +167,7 @@ struct YesTesselationDraw : BaseProgram<V, F> {
   }
   void draw(GL::VBO<VertexType> &vbo, const GL::EBO &ebo,
             const bool reset = true) const {
-    bind(vbo, ebo);
+    Base::bind(vbo, ebo);
     glPatchParameteri(GL_PATCH_VERTICES, PATCH_SIZE);
     glDrawElements(GL_PATCHES, ebo.count, ebo.type,
                    reinterpret_cast<const void *>(0));
