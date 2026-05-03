@@ -131,7 +131,7 @@ protected:
 };
 template <typename V, typename F> struct NoTesselationDraw : BaseProgram<V, F> {
   using VertexType = typename BaseProgram<V, F>::VertexType;
-  using BaseProgram::BaseProgram;
+  using BaseProgram<V, F>::BaseProgram;
 
   void draw(const GLenum primitive, GL::VBO<VertexType> &vbo,
             const bool reset = true) const {
@@ -152,7 +152,7 @@ template <typename V, typename F> struct NoTesselationDraw : BaseProgram<V, F> {
 template <typename V, typename T, typename F>
 struct YesTesselationDraw : BaseProgram<V, F> {
   using VertexType = typename BaseProgram<V, F>::VertexType;
-  using BaseProgram::BaseProgram;
+  using BaseProgram<V, F>::BaseProgram;
 
   static constexpr auto PATCH_SIZE = T::PATCH_SIZE;
 

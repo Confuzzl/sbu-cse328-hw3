@@ -8,9 +8,9 @@ struct Key {
   // static constexpr Callback NONE = [](const double) {};
 
   static constexpr struct Hold {
-  } HOLD;
+  } HOLD{};
   static constexpr struct Just {
-  } JUST;
+  } JUST{};
 
   bool on = false;
   bool justUsed = false;
