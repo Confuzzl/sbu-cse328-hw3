@@ -22,3 +22,5 @@ build/
 out/
 .vs/
 
+# submission
+*.zip
