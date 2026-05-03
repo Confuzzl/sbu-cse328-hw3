@@ -56,7 +56,7 @@ add_executable(hw3
   "src/geom/triangle.cpp"
   "include/geom/shape.h"
   "include/app/scene1.h"
-  "src/app/scene1.cpp" "src/app/base_scene.cpp" "include/geom/rotator.h" "src/geom/rotator.cpp")
+  "src/app/scene1.cpp" "src/app/base_scene.cpp" "include/geom/rotator.h" "src/geom/rotator.cpp" "include/app/scene8.h" "src/app/scene8.cpp")
 target_include_directories(hw3 PUBLIC include)
 target_compile_definitions(hw3 PRIVATE SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 

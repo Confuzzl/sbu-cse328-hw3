@@ -173,14 +173,14 @@ void Renderer::renderImpl(const float dt) const {
 
     app()
         .shaders.texcol.setCamera(world->cam.matrix())
-        .bindTexture(sun)
+        .bindTextureSampler(sun)
         .setModel(billboard)
         .setFragColor(world->lightColor)
         .draw(GL_TRIANGLES, LIGHT, ebo);
   }
 
   {
-    static GL::Texture groundTex{"ground.png", GL_LINEAR};
+    static GL::Texture groundTex{"ground.png"};
     static constexpr vert_lay::postex ground[]{
         {{0, 0, 0}, {0, 0}},
         {{0, 0, WORLD_SIZE}, {0, TILES}},
@@ -196,7 +196,7 @@ void Renderer::renderImpl(const float dt) const {
 
     app()
         .shaders.texcol.setCamera(world->cam.matrix())
-        .bindTexture(groundTex)
+        .bindTextureSampler(groundTex)
         .setModel({1.0})
         .setFragColor(world->lightColor)
         .draw(GL_TRIANGLES, GROUND, ebo);

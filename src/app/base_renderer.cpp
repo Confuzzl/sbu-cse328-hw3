@@ -34,6 +34,7 @@ void BaseRenderer::renderSidebarPrelude(const float dt) const {
   ImGui::TextUnformatted("ESC to exit");
   ImGui::TextUnformatted("WASD to move");
   ImGui::TextUnformatted("Arrow keys or mouse to rotate");
+  ImGui::TextUnformatted("1-8 keys to switch scenes");
   ImGui::TextUnformatted("F1 for wireframe");
   ImGui::TextUnformatted("F2 for flat shading");
   ImGui::TextUnformatted("F3 for normal shading");
@@ -51,7 +52,7 @@ void BaseRenderer::renderSidebarPostlude() const {
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 void BaseRenderer::renderImpl(const float dt) const {
-  static GL::Texture tex{"light.png"};
+  static GL::Texture tex{"light.png", GL_NEAREST};
   static constexpr vert_lay::postex light[]{
       {{-0.5, -0.5, 0}, {0, 0}},
       {{+0.5, -0.5, 0}, {1, 0}},
@@ -74,7 +75,7 @@ void BaseRenderer::renderImpl(const float dt) const {
 
   app()
       .shaders.texcol.setCamera(world->cam.matrix())
-      .bindTexture(tex)
+      .bindTextureSampler(tex)
       .setModel(billboard)
       .setFragColor(world->lightColor)
       .draw(GL_TRIANGLES, LIGHT, ebo);

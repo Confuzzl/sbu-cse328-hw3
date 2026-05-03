@@ -66,7 +66,7 @@ struct EBO : BufferObject {
   template <typename T>
   EBO(const T &list)
       : BufferObject{static_cast<GLsizeiptr>(list.size() *
-                                             sizeof(T::value_type)),
+                                             sizeof(typename T::value_type)),
                      GL_DYNAMIC_STORAGE_BIT, std::data(list)},
         type{macroOf<std::make_unsigned_t<typename T::value_type>>()} {
     count = std::size(list);

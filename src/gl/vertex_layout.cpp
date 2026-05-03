@@ -17,4 +17,7 @@ template <> void enable<cylinder>(const GLuint vaoID) {
 template <> void enable<superquadric>(const GLuint vaoID) {
   enable<glm::vec3, glm::vec3, glm::vec3>(vaoID);
 }
+template <> void enable<normalmap>(const GLuint vaoID) {
+  enable<glm::vec3, glm::vec3, glm::vec3, glm::vec2>(vaoID);
+}
 } // namespace shaders::vertex_layout

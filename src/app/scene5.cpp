@@ -45,6 +45,12 @@ void World::update(const float dt) { rotation(dt); }
 void Renderer::renderImpl(const float dt) const {
   BaseRenderer::renderImpl(dt);
 
+  if (world->renderState == World::RenderState::WIREFRAME) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  } else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+
   const auto &torus = world->torus;
   static GL::VBO<vert_lay::torus> TORUS{1};
   TORUS.write({torus.center, torus.innerRadius, torus.outerRadius});

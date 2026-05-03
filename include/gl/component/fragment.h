@@ -21,8 +21,8 @@ FRAG_COLOR;
 FRAG_END;
 
 FRAG_BEGIN(Texcol, "texcol.frag");
-FRAG_COLOR;
 NEW_SAMPLER(sampler);
+FRAG_COLOR;
 FRAG_END;
 
 FRAG_BEGIN(Flat, "flat.frag");
@@ -38,6 +38,15 @@ FRAG_BEGIN(Phong, "phong.frag");
 FRAG_COLOR;
 NEW_UNIFORM(glm::vec3, light);
 NEW_UNIFORM(Color, light_color);
+NEW_UNIFORM(glm::vec3, camera_pos);
+FRAG_END;
+
+FRAG_BEGIN(NormalMap, "normal_map.frag");
+NEW_SAMPLER(diffuse_map);
+NEW_SAMPLER(normal_map);
+// FRAG_COLOR;
+NEW_UNIFORM(glm::vec3, light);
+// NEW_UNIFORM(Color, light_color);
 NEW_UNIFORM(glm::vec3, camera_pos);
 FRAG_END;
 } // namespace shaders::frag

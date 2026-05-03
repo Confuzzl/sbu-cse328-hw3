@@ -37,6 +37,7 @@ Initializer::Initializer()
               sceneChangeCallback<5>(),
               sceneChangeCallback<6>(),
               sceneChangeCallback<7>(),
+              sceneChangeCallback<8>(),
               {GLFW_KEY_TAB,
                Key{
                    Key::JUST,
@@ -171,6 +172,7 @@ App::App()
          std::make_unique<scene5::Scene>(),
          std::make_unique<scene6::Scene>(),
          std::make_unique<scene7::Scene>(),
+         std::make_unique<scene8::Scene>(),
       }, activeScene{scenes[0].get()} {
 }
 void App::run() {

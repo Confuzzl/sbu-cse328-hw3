@@ -1,4 +1,4 @@
-# HW2
+# HW3
 
 Vincent Yang
 
@@ -8,14 +8,18 @@ vincent.yang.2@stonybrook.edu
 
 ## Overview
 
-- Implemented a sample modern OpenGL program with GLFW as the windowing toolkit. 
-- Implemented some basic geometries, including lines, triangles, and circles. Circles are implemented with tessellation shaders. 
+Implemented a sample program to display flat-shaded triangle, tetrahedron and sphere (with tessellation shaders). 
+Also implemented a FPS-style camera and local illumination with the Phong shading model. 
+
+Note: Directory `./var/` contains vertices for the required polyhedral objects. 
+Each line denotes a 3D point (x, y, and z coordinates), and each 3 lines denote a triangular facet. 
+Note that many points are duplicated as they appear in multiple facets!
 
 ## Notes
 
 - All README files for future homework should also comply with the same format as this one. 
 - This program template is just for your reference. Please feel free to code your own program (i.e., not using this template). However, the user interface (mouse and keyboard functionalities) should be the same as specified in the homework manual. 
-- Please **comply with the submission requirements as detailed on the [TA Help Page](https://www3.cs.stonybrook.edu/~xihan1/courses/cse328/ta_help_page.html)**. Plesase rename the directory as instructed by the TA Help Page, and submit via Brightspace. 
+- Please **comply with the submission requirements as detailed on the [TA Help Page](https://www3.cs.stonybrook.edu/~xihan1/courses/cse328/ta_help_page.html)**. Plesase rename this directory as instructed by the TA Help Page, and submit via Brightspace. 
 - Please also make sure you have checked all implemented features with "x"s in the Markdown table below. As speficied on the TA Help Page, only checked features will be considered for grading!
 
 ## Hints on The Template
@@ -50,58 +54,105 @@ apt install libopencv-dev libglm-dev libglew-dev libglfw3-dev mesa-utils libx11-
 
 ## Compile & Run
 
-- Run inside this directory, i.e., `hw1/`: 
+- Run in the directory of this README: 
 ```bash
 mkdir build
 cd build
 cmake -DMAKE_BUILD_TYPE=Release ..
 make 
 cd ..
-./build/hw2
+./build/hw3
 ```
+
+## Usage
+
+- Press `W`/`S`/`A`/`D`/`UP`/`DOWN`, or drag/scroll the mouse to adjust the camera. 
+
+## Notes
+
+- In this program, the sphere parameters passed into tessellation shaders via shader uniforms. 
+  Note how this differs from the "pass-by-vertex-attribute-array" method for the circle example; 
+- If this program does not work on your VMWare virtual environment, 
+  please try to [disable the 3D acceleration feature](https://kb.vmware.com/s/article/59146). 
 
 ## Features Implemented
 
 Check all features implemented with "x" in "[ ]"s. 
-Features or parts left unchecked here won't be graded! 
+Only features or parts checked here would be graded! 
 
-- [X] 1. Bouncing Ball
-  - [X] Creation
-  - [X] Dynamically reading config file
-  - [X] Movement
-  - [X] Collison detection
-- [X] 2. 4+ Bouncing Balls
-- [X] 3. Bouncing Face
-  - [X] Creation
-  - [X] Dynamically reading config file
-  - [X] Movement
-  - [X] Collison detection
-  - [X] Generation Evolution
-- [X] 4. More Bouncing Faces
-  - [X] 8+ bouncing faces
-  - [X] 16+ bonucing faces
-- [X] 5. BONUS
-  - GUI and keyboard shortcuts
-  - QOL features in required part:
-    - etc/config.txt fallback values
-    - ability to change ball parameters with GUI
-    - visual indicators for whether or not a ball is placeable
-  - New simulation: _Wuxing_ (Five Elements):
-    - Uses different shader to render balls
-      - Geometry shader
-      - Texture support
-    - Element balls interact with each other differently based on their element types
-    - Randomized ball velocity
+- [x] **P0: Global Functionalities** (See each object for display modes)
+  - [x] Camera Functionalities
+    - [x] Show/hide x, y, z Axes
+    - [x] `W`/`S`/`A`/`D`/`UP`/`DOWN` Functionalities
+- [X] **P1: Simple Polyhedral Objects**
+  - [X] Tetrahedron
+    - [X] Wireframe
+    - [X] Flat
+    - [X] Smooth
+  - [X] Cube
+    - [X] Wireframe
+    - [X] Flat
+    - [X] Smooth
+  - [X] Octahedron
+    - [X] Wireframe
+    - [X] Flat
+    - [X] Smooth
+- [X] **P2: Icosahedron**
+  - [X] Wireframe
+  - [X] Flat
+  - [X] Smooth
+  - [X] Subdivision
+- [X] **P3: Ellipsoid**
+  - [X] Wireframe
+  - [X] Flat
+  - [X] Smooth
+  - [X] Subdivision
+- [X] **P4: Tessellation**
+  - [X] Sphere
+    - [X] Wireframe
+    - [X] Flat/Smooth
+  - [X] Cylinder
+    - [X] Wireframe
+    - [X] Flat/Smooth
+  - [X] Cone
+    - [X] Wireframe
+    - [X] Flat/Smooth
+- [X] **P5: Torus**
+  - [X] Wireframe
+  - [ ] Flat
+  - [X] Smooth
+  - [X] Subdivision
+- [X] **P6: Super-quqdrics And Dodecahedron**
+  - [X] Super-quqdrics
+    - [X] Wireframe
+    - [X] Flat/Smooth
+    - [X] Dynamically Load Parameters
+  - [X] Dodecahedron
+    - [X] Wireframe
+    - [X] Flat
+    - [X] Smooth
+    - [X] Subdivision
+- [X] **P7: Flight Simulation**
+  - [X] City Scene Assembly (Has 8-12 urban structures)
+  - [X] Display
+    - [X] Wireframe
+    - [X] Flat
+    - [X] Smooth
+  - [X] Loops
+    - [X] Horizontal Loop
+    - [X] Vertical Loop
+- [X] **P8: Bonus**
+  - [X] Normal Display Mode
+  - [X] Other (Please Specify)
 
 ## Usage
 
-- If you have implemented extra functionalities not mentioned in the manual,
-  you may specify them here.
-- If your program failed to obey the required mouse/keyboard gestures,
-  you may also specify your own setting here.
-  In this case, penalties may apply.
-
-## Appendix
-
-Please include any other stuff you would like to mention in this section.
-E.g., format of your config file, and your suggestions on possible combinations of cubic curve parameters. 
+- If you have implemented extra functionalities not mentioned in the manual, you may specify them here.
+  - Ability to move light to current position
+  - GUI based parameter changing along with file based parameters
+  - Ability to rotate all objects in scenarios 1-6 smoothly
+  - Normal mode is normalized from [-1, +1] to [0, 1] for RGB
+  - Use of textures
+  - Tangent space normal mapping in scene 8
+- If your program failed to obey the required mouse/keyboard gestures, you may also specify your own setting here. In this case, penalties may apply.
+  - No flat shading for torus because I implemented it with tessellation shaders

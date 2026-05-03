@@ -70,10 +70,10 @@ struct alignas(4) postex {
 template <> void enable<postex>(const GLuint vaoID);
 
 struct alignas(4) posnorm {
-  glm::vec3 _pos{};
+  glm::vec3 pos{};
   glm::vec3 norm{};
 
-  const void *data() const { return &_pos; }
+  const void *data() const { return &pos; }
 };
 template <> void enable<posnorm>(const GLuint vaoID);
 
@@ -106,6 +106,16 @@ struct alignas(4) superquadric {
   const void *data() const { return &center; }
 };
 template <> void enable<superquadric>(const GLuint vaoID);
+
+struct alignas(4) normalmap {
+  glm::vec3 pos;
+  glm::vec3 norm;
+  glm::vec3 tangent;
+  glm::vec2 uv_in;
+
+  const void *data() const { return &pos; }
+};
+template <> void enable<normalmap>(const GLuint vaoID);
 } // namespace shaders::vertex_layout
 
 namespace vert_lay = shaders::vertex_layout;

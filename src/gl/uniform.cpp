@@ -13,6 +13,7 @@ GLuint Sampler::getBinding(const GLuint shaderID, const char *name) {
                     GL::getErrorName())};
   GLuint binding;
   glGetUniformuiv(shaderID, location, &binding);
+  fmt::println("sampler {} at location={} binding={}", name, location, binding);
   return binding;
 }
 

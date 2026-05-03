@@ -51,11 +51,18 @@ void World::update(const float dt) {
 void Renderer::renderImpl(const float dt) const {
   BaseRenderer::renderImpl(dt);
 
+  if (world->renderState == World::RenderState::WIREFRAME) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  } else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+
   {
     const auto &sphere = world->sphere;
     const auto &rotation = world->sphere.rotation.mat;
     static GL::VBO<vert_lay::sphere> SPHERE{1};
     SPHERE.write(vert_lay::sphere{sphere.center, sphere.radius});
+
     app()
         .shaders.sphere.setCamera(world->cam.matrix())
         .setModel(sphere.transform * rotation)

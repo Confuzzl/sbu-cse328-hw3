@@ -1,8 +1,8 @@
 #version 450 core
 
 uniform uint frag_color;
-uniform uint light_color;
 uniform vec3 light;
+uniform uint light_color;
 
 in vec3 normal;
 

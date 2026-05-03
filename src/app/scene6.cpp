@@ -1,9 +1,12 @@
 #include "app/scene6.h"
 
+#include <imgui.h>
+
 #include "app/app.h"
 #include "gl/gl_object.h"
 
-#include <imgui.h>
+#include <filesystem>
+#include <fstream>
 
 using namespace scene6;
 
@@ -240,13 +243,43 @@ void World::update(const float dt) {
   sqRotation(dt);
   shownDodecahedron.rotation(dt);
 }
+void World::updateDefaultConfig() {
+  static constexpr auto CONFIG_PATH = SOURCE_DIR "/etc/config.txt";
+  std::ifstream file{CONFIG_PATH};
+  Config config{};
+  for (int i = 0; i < 3; i++)
+    file >> defaultConfig.scales[i];
+  for (int i = 0; i < 3; i++)
+    file >> defaultConfig.powers[i];
+  defaultSuccess = static_cast<bool>(file);
+  if (!file) {
+    // print_err("ERROR READING config.txt");
+    defaultConfig = FALLBACK_CONFIG;
+  }
+}
 
 void Renderer::renderImpl(const float dt) const {
   BaseRenderer::renderImpl(dt);
 
+  if (world->renderState == World::RenderState::WIREFRAME) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  } else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+
   static GL::VBO<vert_lay::superquadric> SQ{1};
   const auto &[center, scales, powers, transform, color] = world->superquadric;
-  SQ.write({center, scales, powers});
+  switch (world->configMode) {
+  case World::ConfigMode::DEFAULT: {
+    SQ.write(
+        {center, world->defaultConfig.scales, world->defaultConfig.powers});
+    break;
+  }
+  case World::ConfigMode::CUSTOM: {
+    SQ.write({center, scales, powers});
+    break;
+  }
+  }
   app()
       .shaders.superquadric.setCamera(world->cam.matrix())
       .setModel(transform * world->sqRotation.mat)
@@ -319,6 +352,7 @@ void Renderer::renderImpl(const float dt) const {
     }
   }
 }
+
 void Renderer::renderSidebar(const float dt) {
   ImGui::TextUnformatted("+ and - to change quality");
   ImGui::Text("subdivide=%d", world->subLevel);
@@ -331,13 +365,41 @@ void Renderer::renderSidebar(const float dt) {
   if (ImGui::Button("reset##superquadric")) {
     world->sqRotation.mat = {1.0};
   }
-  ImGui::SliderFloat("A", &world->superquadric.scales.x, 0.1, 4, "%.1f");
-  ImGui::SliderFloat("B", &world->superquadric.scales.y, 0.1, 4, "%.1f");
-  ImGui::SliderFloat("C", &world->superquadric.scales.z, 0.1, 4, "%.1f");
+  static int configType = 0;
+  ImGui::RadioButton("default", &configType, 0);
+  ImGui::SameLine();
+  ImGui::RadioButton("custom", &configType, 1);
+  static constexpr auto sliders = [](auto &&t) {
+    ImGui::SliderFloat("A", &t.scales.x, 0.1, 4, "%.1f");
+    ImGui::SliderFloat("B", &t.scales.y, 0.1, 4, "%.1f");
+    ImGui::SliderFloat("C", &t.scales.z, 0.1, 4, "%.1f");
 
-  ImGui::SliderFloat("r", &world->superquadric.powers.x, 0.1, 4, "%.1f");
-  ImGui::SliderFloat("s", &world->superquadric.powers.y, 0.1, 4, "%.1f");
-  ImGui::SliderFloat("t", &world->superquadric.powers.z, 0.1, 4, "%.1f");
+    ImGui::SliderFloat("r", &t.powers.x, 0.1, 4, "%.1f");
+    ImGui::SliderFloat("s", &t.powers.y, 0.1, 4, "%.1f");
+    ImGui::SliderFloat("t", &t.powers.z, 0.1, 4, "%.1f");
+  };
+  switch (world->configMode = static_cast<World::ConfigMode>(configType)) {
+  case World::ConfigMode::DEFAULT: {
+    world->updateDefaultConfig();
+    ImGui::BeginDisabled();
+    sliders(world->defaultConfig);
+    ImGui::EndDisabled();
+    if (!world->defaultSuccess) {
+      ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ImColor{RED}});
+      ImGui::Text("ERROR");
+      if (ImGui::IsItemHovered() && ImGui::BeginTooltip()) {
+        ImGui::SetTooltip("Couldn't parse etc/config.txt");
+        ImGui::EndTooltip();
+      }
+      ImGui::PopStyleColor();
+    }
+    break;
+  }
+  case World::ConfigMode::CUSTOM: {
+    sliders(world->superquadric);
+    break;
+  }
+  }
 
   ImGui::SeparatorText("Dodecahedron");
   ImGui::Checkbox("rotate##dodecahedron",

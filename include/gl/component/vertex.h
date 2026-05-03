@@ -51,6 +51,12 @@ NEW_UNIFORM_BLOCK(ProjectionBlock);
 NEW_UNIFORM(glm::mat4, cam);
 NEW_UNIFORM(glm::mat4, model);
 VERT_END;
+
+VERT_BEGIN(NormalMap, vertex_layout::normalmap, "normal_map.vert");
+NEW_UNIFORM_BLOCK(ProjectionBlock);
+NEW_UNIFORM(glm::mat4, cam);
+NEW_UNIFORM(glm::mat4, model);
+VERT_END;
 } // namespace shaders::vert
 
 #undef VERT_BEGIN

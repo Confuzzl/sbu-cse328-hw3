@@ -7,3 +7,4 @@
 #include "app/scene5.h"
 #include "app/scene6.h"
 #include "app/scene7.h"
+#include "app/scene8.h"

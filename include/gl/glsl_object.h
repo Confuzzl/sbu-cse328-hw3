@@ -34,8 +34,8 @@
 #define SET_UNIFORM_T(func_name, param_t, param_name, def)                     \
   SET_UNIFORM(func_name, param_t, param_name, tessellation, def)
 
-#define BIND_TEXTURE(sampler_name)                                             \
-  auto &bindTexture(const GL::Texture &texture) {                              \
+#define BIND_TEXTURE(sampler, sampler_name)                                    \
+  auto &bindTexture##sampler(const GL::Texture &texture) {                     \
     glBindTextureUnit(fragment.sampler_name.binding, texture.ID);              \
     return *this;                                                              \
   }
@@ -230,7 +230,7 @@ struct Basic : detail::GenericProgram<vert::Basic, void, void, frag::Basic> {
 struct Texcol : detail::GenericProgram<vert::Tex, void, void, frag::Texcol> {
   SET_UNIFORM_V(Camera, glm::mat4 &, cam, )
   SET_UNIFORM_V(Model, glm::mat4 &, model, )
-  BIND_TEXTURE(sampler);
+  BIND_TEXTURE(Sampler, sampler);
   SET_UNIFORM_F(FragColor, Color, frag_color, )
 };
 
@@ -300,15 +300,17 @@ struct Superquadric : detail::GenericProgram<vert::Superquadric, void,
   SET_UNIFORM_F(CameraPos, glm::vec3, camera_pos, )
   SET_UNIFORM_F(FragColor, Color, frag_color, )
 };
-// struct SubdivideFlat
-//     : detail::GenericProgram<vert::Normal, geom::Subdivide, void, frag::Flat>
-//     {
-//   SET_UNIFORM_G(Camera, glm::mat4 &, cam, )
-//   SET_UNIFORM_G(Model, glm::mat4 &, model, )
-//   SET_UNIFORM_F(Light, glm::vec3, light, )
-//   SET_UNIFORM_F(LightColor, Color, light_color, )
-//   SET_UNIFORM_F(FragColor, Color, frag_color, )
-// };
+struct NormalMap
+    : detail::GenericProgram<vert::NormalMap, void, void, frag::NormalMap> {
+  SET_UNIFORM_V(Camera, glm::mat4 &, cam, )
+  SET_UNIFORM_V(Model, glm::mat4 &, model, )
+  BIND_TEXTURE(DiffuseMap, diffuse_map);
+  BIND_TEXTURE(NormalMap, normal_map);
+  SET_UNIFORM_F(Light, glm::vec3, light, )
+  // SET_UNIFORM_F(LightColor, Color, light_color, )
+  SET_UNIFORM_F(CameraPos, glm::vec3, camera_pos, )
+  // SET_UNIFORM_F(FragColor, Color, frag_color, )
+};
 } // namespace shaders
 
 #undef SET_UNIFORM_TEMPLATE

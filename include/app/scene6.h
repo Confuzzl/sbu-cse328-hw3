@@ -21,6 +21,15 @@ struct World : BaseWorld {
   } superquadric;
   RotationController sqRotation;
 
+  enum struct ConfigMode { DEFAULT, CUSTOM } configMode = ConfigMode::DEFAULT;
+  struct Config {
+    glm::vec3 scales;
+    glm::vec3 powers;
+  } defaultConfig{};
+  static constexpr Config FALLBACK_CONFIG{{1, 1, 1}, {1, 1, 1}};
+  bool defaultSuccess = false;
+  void updateDefaultConfig();
+
   Shape baseDodecahedron;
   Object shownDodecahedron;
 

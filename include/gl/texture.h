@@ -14,7 +14,7 @@ struct Texture {
   GLuint ID;
   glm::uvec2 size;
 
-  Texture(const std::string_view name, const GLenum filter = GL_NEAREST,
+  Texture(const std::string_view name, const GLenum filter = GL_LINEAR,
           const GLenum wrap = GL_REPEAT);
   ~Texture();
   MOVE_ONLY_TYPE(Texture)

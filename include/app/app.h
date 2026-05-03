@@ -36,9 +36,10 @@ struct App : Initializer {
     shaders::Cone cone;
     shaders::Torus torus;
     shaders::Superquadric superquadric;
+    shaders::NormalMap normalMap;
   } shaders;
 
-  std::unique_ptr<BaseScene> scenes[7];
+  std::unique_ptr<BaseScene> scenes[8];
   BaseScene *activeScene;
 
   App();
